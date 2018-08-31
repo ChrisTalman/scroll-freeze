@@ -1,6 +1,6 @@
 {
 	"name": "@bluecewe/scroll-freeze",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Provides interface by which scrolling can be frozen in a stack.",
 	"repository": {
 		"type": "git",

@@ -5,9 +5,9 @@ interface Stack extends Map<string, StackItem> {};
 
 // Constants
 const CSS_CLASS_NAME = 'bluecewe-scroll-freeze';
-const cssClass =
+const CSS_CLASS =
 `
-	html.{$CSS_CLASS_NAME} > body
+	html.` + CSS_CLASS_NAME + ` > body
 	{
 		position: fixed;
 	}
@@ -24,7 +24,7 @@ class Manager
 		styleElement.classList.add(CSS_CLASS_NAME);
 		document.head.insertBefore(styleElement, document.head.children[0]);
 		const stylesheet = Array.from(document.styleSheets).find(stylesheet => stylesheet.ownerNode === styleElement) as CSSStyleSheet;
-		stylesheet.insertRule(cssClass, 0);
+		stylesheet.insertRule(CSS_CLASS, 0);
 	};
 	/** Adds to the freeze stack. */
 	public stack()
