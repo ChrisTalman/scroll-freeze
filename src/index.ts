@@ -10,6 +10,7 @@ const CSS_CLASS =
 	html.` + CSS_CLASS_NAME + ` > body
 	{
 		position: fixed;
+		overflow-y: unset;
 	}
 `;
 
