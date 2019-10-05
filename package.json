@@ -1,5 +1,5 @@
 {
-	"name": "@bluecewe/scroll-freeze",
+	"name": "@ChrisTalman/scroll-freeze",
 	"version": "1.0.0",
 	"description": "Provides interface by which scrolling can be frozen in a stack.",
 	"repository":
