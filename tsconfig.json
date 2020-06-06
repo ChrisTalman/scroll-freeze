@@ -1,24 +1,24 @@
 {
-    "compilerOptions":
-    {
-        "target": "es2017",
-        "module": "ES6",
-        "moduleResolution": "node",
-        "baseUrl": "./",
+	"compilerOptions":
+	{
+		"target": "es2017",
+		"module": "ES6",
+		"moduleResolution": "node",
+		"baseUrl": "./",
 		"lib":
 		[
-            "es2017",
+			"es2017",
 			"dom"
 		],
-        "downlevelIteration": true,
-        "alwaysStrict": true,
-        "allowSyntheticDefaultImports": true,
-        "allowUnreachableCode": true,
-		"declaration": true,
-        "watch": true
-    },
-    "include":
-    [
-        "src/**/*"
-    ]
+		"downlevelIteration": true,
+		"alwaysStrict": true,
+		"allowSyntheticDefaultImports": true,
+		"allowUnreachableCode": true,
+		"strictNullChecks": true,
+		"watch": true
+	},
+	"include":
+	[
+		"src/**/*"
+	]
 }

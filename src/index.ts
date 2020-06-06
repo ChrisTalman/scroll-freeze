@@ -4,7 +4,7 @@
 interface Stack extends Map<string, StackItem> {};
 
 // Constants
-const CSS_CLASS_NAME = 'bluecewe-scroll-freeze';
+const CSS_CLASS_NAME = 'scroll-freeze-module-active';
 const CSS_CLASS =
 `
 	html.` + CSS_CLASS_NAME + ` > body
@@ -15,7 +15,7 @@ const CSS_CLASS =
 `;
 
 /** Manages a stack of requests for the DOM <body> to be unscrollable. */
-class Manager
+export class Manager
 {
 	private stackMap: Stack = new Map();
 	private stackCount = 0;
@@ -30,7 +30,7 @@ class Manager
 	/** Adds to the freeze stack. */
 	public stack()
 	{
-		const item = new StackItem(this.stackCount.toString());
+		const item = new StackItem({id: this.stackCount.toString()});
 		this.stackCount++;
 		this.stackMap.set(item.id, item);
 		if (this.stackMap.size === 1)
@@ -67,33 +67,30 @@ class Manager
 /** An item on the freeze stack. */
 export class StackItem
 {
-	public id: string;
-	constructor(id: string)
-	{
-		this.initialiseProperties(id);
-	};
-	private initialiseProperties(id: string)
+	public readonly manager: Manager;
+	public readonly id: string;
+	constructor({id}: {id: string})
 	{
 		this.id = id;
 	};
 	/** Removes the item from the freeze stack. */
 	public unstack()
 	{
-		instance.unstack(this.id);
+		this.manager.unstack(this.id);
 	};
 };
 
 function pixelsStringToNumber(string: string)
 {
 	const matches = string.match(/-?([\d]+)/);
-	let numberMatch = null;
+	let numberMatch: string | undefined;
 	if (matches)
 	{
 		numberMatch = matches[1];
 	};
 	if (!numberMatch)
 	{
-		ScrollFreezeError.throw({message: '[Pixels String To Number] No number found.', code: 'missing'});
+		throw new ScrollFreezeError({message: 'Failed to extract pixel number from pixel string', code: 'pixelNumberMissing'});
 	};
 	const number = parseFloat(numberMatch);
 	return number;
@@ -102,22 +99,9 @@ function pixelsStringToNumber(string: string)
 export class ScrollFreezeError extends Error
 {
 	public code: string;
-	static throw(parameters: ErrorParameters)
+	constructor({message, code}: {message: string, code: 'pixelNumberMissing'})
 	{
-		throw new this(parameters);
-	};
-	constructor(parameters: ErrorParameters)
-	{
-		super(parameters.message);
-		this.code = parameters.code;
+		super(message);
+		this.code = code;
 	};
 };
-
-interface ErrorParameters
-{
-	message: string;
-	code: string;
-};
-
-const instance = new Manager();
-export default instance;
