@@ -7,7 +7,7 @@ interface Stack extends Map<string, StackItem> {};
 const CSS_CLASS_NAME = 'scroll-freeze-module-active';
 const CSS_CLASS =
 `
-	html.` + CSS_CLASS_NAME + ` > body
+	html.${CSS_CLASS_NAME} > body
 	{
 		position: fixed;
 		overflow-y: unset;
