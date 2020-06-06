@@ -1,17 +1,11 @@
 {
-	"name": "@ChrisTalman/scroll-freeze",
+	"name": "@chris-talman/scroll-freeze",
 	"version": "1.0.0",
-	"description": "Provides interface by which scrolling can be frozen in a stack.",
-	"repository":
-	{
-		"type": "git",
-		"url": "https://bitbucket.org/Bluecewe/scroll-freeze.git"
-	},
+	"description": "Provides interface by which scrolling can be frozen in a stack",
 	"scripts":
 	{
 		"build": "./node_modules/.bin/webpack"
 	},
-	"types": "./src/index.d.ts",
 	"devDependencies":
 	{
 		"ts-loader": "^4.5.0",
