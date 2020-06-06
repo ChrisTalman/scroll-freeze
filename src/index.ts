@@ -5,32 +5,51 @@ interface Stack extends Map<string, ScrollFreezeStackItem> {};
 
 // Constants
 const CSS_CLASS_NAME = 'scroll-freeze-module-active';
-const CSS_CLASS =
-`
-	html.${CSS_CLASS_NAME} > body
-	{
-		position: fixed;
-		overflow-y: unset;
-	}
-`;
 
 /** Manages a stack of requests for the DOM <body> to be unscrollable. */
 export class ScrollFreezeManager
 {
-	private stackMap: Stack = new Map();
+	private readonly stackMap: Stack = new Map();
 	private stackCount = 0;
+	private readonly cssClassName: string;
 	constructor()
 	{
+		this.cssClassName = this.generateCssClassName();
+		this.insertCssRule();
+	};
+	/** Inserts rule into CSS stylesheet which will be used later to freeze scrolling. */
+	private insertCssRule()
+	{
 		const styleElement = document.createElement('style');
-		styleElement.classList.add(CSS_CLASS_NAME);
+		styleElement.classList.add(this.cssClassName);
 		document.head.insertBefore(styleElement, document.head.children[0]);
 		const stylesheet = Array.from(document.styleSheets).find(stylesheet => stylesheet.ownerNode === styleElement) as CSSStyleSheet;
-		stylesheet.insertRule(CSS_CLASS, 0);
+		const cssClass = this.generateCssClass();
+		stylesheet.insertRule(cssClass, 0);
+	};
+	/** Generates CSS class name. */
+	private generateCssClassName()
+	{
+		const name = `${CSS_CLASS_NAME}`;
+		return name;
+	};
+	/** Generates CSS class. */
+	private generateCssClass()
+	{
+		const rule =
+		`
+			html.${this.cssClassName} > body
+			{
+				position: fixed;
+				overflow-y: unset;
+			}
+		`;
+		return rule;
 	};
 	/** Adds to the freeze stack. */
 	public stack()
 	{
-		const item = new ScrollFreezeStackItem({id: this.stackCount.toString()});
+		const item = new ScrollFreezeStackItem({id: this.stackCount.toString(), manager: this});
 		this.stackCount++;
 		this.stackMap.set(item.id, item);
 		if (this.stackMap.size === 1)
@@ -43,7 +62,7 @@ export class ScrollFreezeManager
 	private freeze()
 	{
 		document.body.style.top = -(document.documentElement.scrollTop) + 'px'; // Currently resets top when class is removed.
-		document.documentElement.classList.add(CSS_CLASS_NAME);
+		document.documentElement.classList.add(this.cssClassName);
 	};
 	/** Removes from freeze stack. */
 	public unstack(item: string | ScrollFreezeStackItem)
@@ -58,7 +77,7 @@ export class ScrollFreezeManager
 	/** Unfreezes body. */
 	private unfreeze()
 	{
-		document.documentElement.classList.remove(CSS_CLASS_NAME);
+		document.documentElement.classList.remove(this.cssClassName);
 		const pixelsAsNumber = pixelsStringToNumber(document.body.style.top);
 		window.scrollTo(0, pixelsAsNumber);
 	};
@@ -69,9 +88,10 @@ export class ScrollFreezeStackItem
 {
 	public readonly manager: ScrollFreezeManager;
 	public readonly id: string;
-	constructor({id}: {id: string})
+	constructor({id, manager}: {id: string, manager: ScrollFreezeManager})
 	{
 		this.id = id;
+		this.manager = manager;
 	};
 	/** Removes the item from the freeze stack. */
 	public unstack()
