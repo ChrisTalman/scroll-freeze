@@ -1,7 +1,7 @@
 'use strict';
 
 // Types
-interface Stack extends Map<string, StackItem> {};
+interface Stack extends Map<string, ScrollFreezeStackItem> {};
 
 // Constants
 const CSS_CLASS_NAME = 'scroll-freeze-module-active';
@@ -15,7 +15,7 @@ const CSS_CLASS =
 `;
 
 /** Manages a stack of requests for the DOM <body> to be unscrollable. */
-export class Manager
+export class ScrollFreezeManager
 {
 	private stackMap: Stack = new Map();
 	private stackCount = 0;
@@ -30,7 +30,7 @@ export class Manager
 	/** Adds to the freeze stack. */
 	public stack()
 	{
-		const item = new StackItem({id: this.stackCount.toString()});
+		const item = new ScrollFreezeStackItem({id: this.stackCount.toString()});
 		this.stackCount++;
 		this.stackMap.set(item.id, item);
 		if (this.stackMap.size === 1)
@@ -46,7 +46,7 @@ export class Manager
 		document.documentElement.classList.add(CSS_CLASS_NAME);
 	};
 	/** Removes from freeze stack. */
-	public unstack(item: string | StackItem)
+	public unstack(item: string | ScrollFreezeStackItem)
 	{
 		const id = typeof item === 'string' ? item : item.id;
 		this.stackMap.delete(id);
@@ -65,9 +65,9 @@ export class Manager
 };
 
 /** An item on the freeze stack. */
-export class StackItem
+export class ScrollFreezeStackItem
 {
-	public readonly manager: Manager;
+	public readonly manager: ScrollFreezeManager;
 	public readonly id: string;
 	constructor({id}: {id: string})
 	{
