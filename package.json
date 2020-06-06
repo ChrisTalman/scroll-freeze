@@ -2,15 +2,13 @@
 	"name": "@chris-talman/scroll-freeze",
 	"version": "1.0.0",
 	"description": "Provides interface by which scrolling can be frozen in a stack",
-	"scripts":
-	{
+	"scripts": {
 		"build": "./node_modules/.bin/webpack"
 	},
-	"devDependencies":
-	{
+	"devDependencies": {
 		"ts-loader": "^4.5.0",
 		"typescript": "^3.0.3",
-		"webpack": "^4.17.1",
-		"webpack-cli": "^3.1.0"
+		"webpack": "4.43.0",
+		"webpack-cli": "3.3.11"
 	}
 }
