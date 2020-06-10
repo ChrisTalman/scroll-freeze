@@ -7,6 +7,8 @@ declare module '@chris-talman/scroll-freeze'
 		public stack(): ScrollFreezeStackItem;
 		/** Removes from freeze stack. */
 		public unstack(item: string | ScrollFreezeStackItem): void;
+		/** Removes all items from stack and unfreezes body. */
+		public clear(): void;
 	}
 
 	/** An item on the freeze stack. */

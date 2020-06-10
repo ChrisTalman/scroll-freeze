@@ -74,6 +74,12 @@ export class ScrollFreezeManager
 			this.unfreeze();
 		};
 	};
+	/** Removes all items from stack and unfreezes body. */
+	public clear()
+	{
+		this.stackMap.clear();
+		this.unfreeze();
+	};
 	/** Unfreezes body. */
 	private unfreeze()
 	{
