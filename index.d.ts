@@ -3,6 +3,7 @@ declare module '@chris-talman/scroll-freeze'
 	/** Manages a stack of requests for the DOM <body> to be unscrollable. */
 	export class ScrollFreezeManager
 	{
+		public readonly frozen: boolean;
 		/** Adds to the freeze stack. */
 		public stack(): ScrollFreezeStackItem;
 		/** Removes from freeze stack. */

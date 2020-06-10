@@ -12,10 +12,16 @@ export class ScrollFreezeManager
 	private readonly stackMap: Stack = new Map();
 	private stackCount = 0;
 	private readonly cssClassName: string;
+	private _frozen = false;
 	constructor()
 	{
 		this.cssClassName = this.generateCssClassName();
 		this.insertCssRule();
+	};
+	get frozen()
+	{
+		const { _frozen } = this;
+		return _frozen;
 	};
 	/** Inserts rule into CSS stylesheet which will be used later to freeze scrolling. */
 	private insertCssRule()
@@ -63,6 +69,7 @@ export class ScrollFreezeManager
 	{
 		document.body.style.top = -(document.documentElement.scrollTop) + 'px'; // Currently resets top when class is removed.
 		document.documentElement.classList.add(this.cssClassName);
+		this._frozen = true;
 	};
 	/** Removes from freeze stack. */
 	public unstack(item: string | ScrollFreezeStackItem)
@@ -83,9 +90,11 @@ export class ScrollFreezeManager
 	/** Unfreezes body. */
 	private unfreeze()
 	{
+		if (!this._frozen) return;
 		document.documentElement.classList.remove(this.cssClassName);
 		const pixelsAsNumber = pixelsStringToNumber(document.body.style.top);
 		window.scrollTo(0, pixelsAsNumber);
+		this._frozen = false;
 	};
 };
 
